@@ -1,14 +1,18 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { InputLogin } from "./components/inputlogin";
 import { ButtonLogin } from "./components/ButtonLogin";
+import { UseUsuarioLogado } from "../../shared/hooks";
+
+
 
 export const Login = () => {
     //useRef serve para guardar valores dentro de uma variavel 
     const inputPasswordRef = useRef<HTMLInputElement> (null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    
+    const {nomeDoUsuario} = UseUsuarioLogado();
+
     //useMemo retorna um valor memorizado, nesse caso ele devolve o tamanho da senha
     const passwordlength = useMemo(()=> {
         return password.length
@@ -22,9 +26,10 @@ export const Login = () => {
     return (
         
         <div>
-            
+             
             <form>
             
+            <p>{nomeDoUsuario}</p>
             <p>quantidade de caracteres para a senha: {password.length}</p>
                 
                 <InputLogin

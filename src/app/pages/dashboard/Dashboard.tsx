@@ -1,22 +1,36 @@
-import { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
-import { UsuarioLogadoContext } from "../../shared/context";
+import { useCallback, useState } from "react";
 
 export const Dashboard = () => {
-    //useRef serve pra quando ocorra mudança em um numero nao renderize na tela
-    const counterRef = useRef({counter: 0});
+    const[lista, setLista] = useState<string[]>(['teste1', 'teste2', 'teste3']);
 
-    const UsuarioLogado = useContext(UsuarioLogadoContext)
+const handleinputonkeydown: React.KeyboardEventHandler<HTMLInputElement> = useCallback((e) => {
+    if(e.key === 'Enter'){
+        if(e.currentTarget.value.trim().length === 0)return
+         
+        const value = e.currentTarget.value;
+        e.currentTarget.value = '';
+
+        setLista((oldlista) =>{
+         
+            if(oldlista.includes(value)) return oldlista
+
+            return [...oldlista, value]
+        })
+    }
+}, [])
 
     return(
         <div>
-        <p>Dashboard</p>
-        
-        <p>{UsuarioLogadoContext.nomeDoUsuario}</p>
-        
-        <p>Contador: {counterRef.current.counter}</p>
-        <button onClick={() => counterRef.current.counter++}>somar</button>
-        <button onClick={() => console.log (counterRef.current)}>revelar</button>
+        <p>LISTA</p>
+        <input
+        onKeyDown={handleinputonkeydown}/>
+
+        <ul>
+            {lista.map((value,index) => {
+                return <li key={value}>{value}</li>
+            })}
+        </ul>
 
          <Link to="/entrar">Login</Link>
         </div>
